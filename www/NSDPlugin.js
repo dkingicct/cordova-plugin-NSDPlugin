@@ -24,4 +24,8 @@ NetworkServiceDiscovery.tearDown = function(arg0, success, error) {
     exec(success, error, "NSDPlugin", "tearDown", [arg0]);
 };
 
+NetworkServiceDiscovery.initializeNsd = function(arg0, success, error) {
+    exec(success, error, "NSDPlugin", "initializeNsd", [arg0]);
+}
+
 module.exports = NetworkServiceDiscovery;

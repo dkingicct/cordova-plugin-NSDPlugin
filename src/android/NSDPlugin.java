@@ -1,7 +1,9 @@
-package cordova-plugin-nsd-plugin;
+package io.ionic.nsd;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaWebView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +19,7 @@ import android.net.nsd.NsdManager;
 public class NSDPlugin extends CordovaPlugin {
 
     Context mContext;
+    NsdServiceInfo mService;
     String mServiceName;
     String mServiceType;
 
@@ -33,26 +36,25 @@ public class NSDPlugin extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-         if(action.equals('initalizeNsd')) {
-             String context = args.getString(0);
-            String serviceName = args.getString(1);
-            String ServiceType = args.getString(2);
-            this.initalizeNsd(context, serviceName, ServiceType, callbackContext);
+         if(action.equals("initializeNsd")) {
+            String serviceName = args.getString(0);
+            String ServiceType = args.getString(1);
+            this.initializeNsd(serviceName, ServiceType, callbackContext);
             return true;
-        } else if(action.equals('registerService')) {
-            Int port = args.getInt(0);
-            this.registerService(int port, callbackContext);
+        } else if(action.equals("registerService")) {
+            int port = args.getInt(0);
+            this.registerService(port, callbackContext);
             return true;
-        } else if(action.equals('discoverServices')) {
+        } else if(action.equals("discoverServices")) {
             this.discoverServices(callbackContext);
             return true;
-        } else if(action.equals('getChosenServiceInfo')) {
+        } else if(action.equals("getChosenServiceInfo")) {
             this.getChosenServiceInfo(callbackContext);
             return true;
-        } else if(action.equals('stopDiscovery')) {
+        } else if(action.equals("stopDiscovery")) {
             this.stopDiscovery(callbackContext);
             return true;
-        } else if(action.equals('tearDown')) {
+        } else if(action.equals("tearDown")) {
             this.tearDown(callbackContext);
             return true;
         }
@@ -61,19 +63,15 @@ public class NSDPlugin extends CordovaPlugin {
 
     //interface methods
     private void registerService(int port, CallbackContext callbackContext) {
-        if( port != null ) {
-            NsdServiceInfo serviceInfo = new NsdServiceInfo();
-            serviceInfo.setPort(port);
-            serviceInfo.setServiceName(mServiceName);
-            serviceInfo.setServiceType(mServiceType);
+        NsdServiceInfo serviceInfo = new NsdServiceInfo();
+        serviceInfo.setPort(port);
+        serviceInfo.setServiceName(mServiceName);
+        serviceInfo.setServiceType(mServiceType);
 
-            mNsdManager.registerService(
-                serviceInfo, NsdManager.PROTOCOL_DNS_SD, mRegistrationListener);
+        mNsdManager.registerService(
+            serviceInfo, NsdManager.PROTOCOL_DNS_SD, mRegistrationListener);
 
-            callbackContext.success();
-        } else {
-            callbackContext.failed();
-        }
+        callbackContext.success();
     }
 
     private void discoverServices(CallbackContext callbackContext) {
@@ -88,24 +86,39 @@ public class NSDPlugin extends CordovaPlugin {
     }
 
     private void getChosenServiceInfo(CallbackContext callbackContext) {
-        callbackContext.success(mService.getPort(), mService.getHost());
+
+        JSONObject tempJson = new JSONObject();
+        try {
+            tempJson.put("port", mService.getPort());
+        } catch (JSONException e) {
+
+        }
+
+        try {
+            tempJson.put("host", mService.getHost());
+        } catch (JSONException e) {
+
+        }
+
+
+        callbackContext.success(tempJson);
     }
 
     private void tearDown(CallbackContext callbackContext) {
         callbackContext.success();
     }
 
-    private void initalizeNsd(String context, String serviceName, String serviceType, CallbackContext callbackContext) {
-        if(context != null && serviceName != null && serviceType != null) {
-            mContext = context;
+    private void initializeNsd(String serviceName, String serviceType, CallbackContext callbackContext) {
+        if(serviceName != null && serviceType != null) {
+            //set context some how here;
             mServiceName = serviceName;
             mServiceType = serviceType;
-            initalizeResolveListener();
+            initializeResolveListener();
             initializeDiscoveryListener();
             initializeRegistrationListener();
             callbackContext.success();
         } else {
-            callbackContext.failed();
+            callbackContext.error("invalid service name or service type");
         }
     }
 
@@ -115,15 +128,15 @@ public class NSDPlugin extends CordovaPlugin {
 
             @Override
             public void onResolveFailed(NsdServiceInfo serviceInfo, int errorCode) {
-                Log.e(TAG, "Resolve failed" + errorCode);
+
             }
 
             @Override
             public void onServiceResolved(NsdServiceInfo serviceInfo) {
-                Log.e(TAG, "Resolve Succeeded. " + serviceInfo);
+
 
                 if (serviceInfo.getServiceName().equals(mServiceName)) {
-                    Log.d(TAG, "Same IP.");
+
                     return;
                 }
                 mService = serviceInfo;
@@ -136,16 +149,16 @@ public class NSDPlugin extends CordovaPlugin {
 
             @Override
             public void onDiscoveryStarted(String regType) {
-                Log.d(TAG, "Service discovery started");
+
             }
 
             @Override
             public void onServiceFound(NsdServiceInfo service) {
-                Log.d(TAG, "Service discovery success" + service);
-                if (!service.getServiceType().equals(SERVICE_TYPE)) {
-                    Log.d(TAG, "Unknown Service Type: " + service.getServiceType());
+
+                if (!service.getServiceType().equals(mServiceType)) {
+
                 } else if (service.getServiceName().equals(mServiceName)) {
-                    Log.d(TAG, "Same machine: " + mServiceName);
+
                 } else if (service.getServiceName().contains(mServiceName)){
                     mNsdManager.resolveService(service, mResolveListener);
                 }
@@ -153,7 +166,7 @@ public class NSDPlugin extends CordovaPlugin {
 
             @Override
             public void onServiceLost(NsdServiceInfo service) {
-                Log.e(TAG, "service lost" + service);
+
                 if (mService == service) {
                     mService = null;
                 }
@@ -161,18 +174,18 @@ public class NSDPlugin extends CordovaPlugin {
 
             @Override
             public void onDiscoveryStopped(String serviceType) {
-                Log.i(TAG, "Discovery stopped: " + serviceType);
+
             }
 
             @Override
             public void onStartDiscoveryFailed(String serviceType, int errorCode) {
-                Log.e(TAG, "Discovery failed: Error code:" + errorCode);
+
                 mNsdManager.stopServiceDiscovery(this);
             }
 
             @Override
             public void onStopDiscoveryFailed(String serviceType, int errorCode) {
-                Log.e(TAG, "Discovery failed: Error code:" + errorCode);
+
                 mNsdManager.stopServiceDiscovery(this);
             }
         };
