@@ -37,9 +37,10 @@ public class NSDPlugin extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
          if(action.equals("initializeNsd")) {
-            String serviceName = args.getString(0);
-            String ServiceType = args.getString(1);
-            this.initializeNsd(serviceName, ServiceType, callbackContext);
+             callbackContext.success();
+            // String serviceName = args.getString(0);
+            // String ServiceType = args.getString(1);
+            // this.initializeNsd(serviceName, ServiceType, callbackContext);
             return true;
         } else if(action.equals("registerService")) {
             int port = args.getInt(0);
