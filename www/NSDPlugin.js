@@ -1,23 +1,27 @@
 var exec = require('cordova/exec');
 
-exports.NsdPlugin = {
-    registerService: function(arg0, success, error) {
-        exec(success, error, "NSDPlugin", "registerService", [arg0]);
-    },
+var NetworkServiceDiscovery = function() {
 
-    discoverServices: function(arg0, success, error) {
-            exec(success, error, "NSDPlugin", "discoverServices", [arg0]);
-    },
+};
 
-    getChosenServiceInfo: function(arg0, success, error) {
-        exec(success, error, "NSDPlugin", "getChosenServiceInfo", [arg0]);
-    },
+NetworkServiceDiscovery.registerService = function(arg0, success, error) {
+    exec(success, error, "NSDPlugin", "registerService", [arg0]);
+};
 
-    stopDiscovery: function(arg0, success, error) {
-        exec(success, error, "NSDPlugin", "stopDiscovery", [arg0]);
-    },
+NetworkServiceDiscovery.discoverServices = function(arg0, success, error) {
+    exec(success, error, "NSDPlugin", "discoverServices", [arg0]);
+};
 
-    tearDown: function(arg0, success, error) {
-        exec(success, error, "NSDPlugin", "tearDown", [arg0]);
-    }
-}
+NetworkServiceDiscovery.getChosenServiceInfo = function(arg0, success, error) {
+    exec(success, error, "NSDPlugin", "getChosenServiceInfo", [arg0]);
+};
+
+NetworkServiceDiscovery.stopDiscovery = function(arg0, success, error) {
+    exec(success, error, "NSDPlugin", "stopDiscovery", [arg0]);
+};
+
+NetworkServiceDiscovery.tearDown = function(arg0, success, error) {
+    exec(success, error, "NSDPlugin", "tearDown", [arg0]);
+};
+
+module.exports = NetworkServiceDiscovery;
