@@ -3,7 +3,7 @@ var exec = require('cordova/exec');
 module.exports = {
     initializedNsd: function(arg0, success, error) {
         console.log("initializedNsd Called!");
-        exec(success, error, "NSDPlugin", "initializeNsd", [arg0]);
+        cordova.exec(success, error, "NSDPlugin", "initializeNsd", [arg0]);
     }
 };
 
