@@ -30,11 +30,11 @@ public class NSDPlugin extends CordovaPlugin {
     // NsdManager.DiscoveryListener mDiscoveryListener;
     // NsdManager.RegistrationListener mRegistrationListener;
 
-    @Override
-    public void initialize(CordovaInterface cordova, CordovaWebView webView) {
-        super.initialize(cordova, webView);
-        // your init code here
-    }
+    // @Override
+    // public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+    //     super.initialize(cordova, webView);
+    //     // your init code here
+    // }
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
