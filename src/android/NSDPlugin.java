@@ -1,4 +1,4 @@
-package org.apache.cordova.NsdPlugin;
+package org.apache.cordova.NSD;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;

@@ -10,7 +10,7 @@
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="NSDPlugin">
-				<param name="android-package" value="cordova-plugin-nsd-plugin.NSDPlugin"/>
+				<param name="android-package" value="org.apache.cordova.NSD.NSDPlugin"/>
 			</feature>
         </config-file>
         <config-file parent="/*" target="AndroidManifest.xml">
