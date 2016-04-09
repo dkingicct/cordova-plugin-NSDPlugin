@@ -19,6 +19,8 @@ import org.json.JSONObject;
  * This class echoes a string called from JavaScript.
  */
 public class NSDPlugin extends CordovaPlugin {
+    public final String LOG_CAT = "NSD";
+
     //
     // Context mContext;
     // NsdServiceInfo mService;
@@ -36,7 +38,7 @@ public class NSDPlugin extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        Log.d("hi!!!!","hi!!!!");
+        Log.d(LOG_CAT,"hi!!!!");
          if(action.equals("initializeNsd")) {
 
              callbackContext.success();
