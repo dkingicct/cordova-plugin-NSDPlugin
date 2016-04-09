@@ -5,6 +5,8 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaWebView;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +39,7 @@ public class NSDPlugin extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
          if(action.equals("initializeNsd")) {
+            Log.d("hi!!!!","hi!!!!");
              callbackContext.success();
             // String serviceName = args.getString(0);
             // String ServiceType = args.getString(1);
