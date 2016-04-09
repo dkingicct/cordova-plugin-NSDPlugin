@@ -1,4 +1,4 @@
-package io.ionic.nsd;
+package org.apache.cordova.NsdPlugin;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -30,16 +30,15 @@ public class NSDPlugin extends CordovaPlugin {
     // NsdManager.DiscoveryListener mDiscoveryListener;
     // NsdManager.RegistrationListener mRegistrationListener;
 
-    // @Override
-    // public void initialize(CordovaInterface cordova, CordovaWebView webView) {
-    //     super.initialize(cordova, webView);
-    //     // your init code here
-    // }
+    public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+        super.initialize(cordova, webView);
+    }
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+        Log.d("hi!!!!","hi!!!!");
          if(action.equals("initializeNsd")) {
-            Log.d("hi!!!!","hi!!!!");
+
              callbackContext.success();
             // String serviceName = args.getString(0);
             // String ServiceType = args.getString(1);
